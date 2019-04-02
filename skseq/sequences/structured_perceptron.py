@@ -1,7 +1,7 @@
 from __future__ import division
 import numpy as np
 import skseq.sequences.discriminative_sequence_classifier as dsc
-import skseq.sequences.sequence as seq
+#import skseq.sequences.sequence as seq
 
 class StructuredPerceptron(dsc.DiscriminativeSequenceClassifier):
     """
@@ -40,11 +40,11 @@ class StructuredPerceptron(dsc.DiscriminativeSequenceClassifier):
         Nothing. The method only changes self.parameters.
         """
         if self.fitted:
-            print "\n\tWarning: Model already trained"
+            print("\n\tWarning: Model already trained")
 
-        for epoch in xrange(num_epochs):
+        for epoch in range(num_epochs):
             acc = self.fit_epoch(dataset)
-            print "Epoch: %i Accuracy: %f" % (epoch, acc)
+            print("Epoch: %i Accuracy: %f" % (epoch, acc))
 
         if self.averaged:
             new_w = 0
@@ -77,7 +77,7 @@ class StructuredPerceptron(dsc.DiscriminativeSequenceClassifier):
         num_labels_total = 0
         num_mistakes_total = 0
 
-        for i in xrange(num_examples):
+        for i in range(num_examples):
             sequence = dataset.seq_list[i]
             num_labels, num_mistakes = self.perceptron_update(sequence)
             num_labels_total += num_labels
@@ -129,7 +129,7 @@ class StructuredPerceptron(dsc.DiscriminativeSequenceClassifier):
             hat_initial_features = self.feature_mapper.get_initial_features(sequence, y_t_hat)
             self.parameters[hat_initial_features] -= self.learning_rate
 
-        for pos in xrange(len(sequence.x)):
+        for pos in range(len(sequence.x)):
             y_t_true = sequence.y[pos]
             y_t_hat = y_hat[pos]
 

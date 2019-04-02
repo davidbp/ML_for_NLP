@@ -1,5 +1,5 @@
 import numpy as np
-from vlex_seq2.sequences.log_domain import *
+from skseq.sequences.log_domain import *
 
 
 class SequenceClassificationDecoder:
@@ -28,8 +28,8 @@ class SequenceClassificationDecoder:
         forward[0, :] = emission_scores[0, :] + initial_scores
 
         # Forward loop.
-        for pos in xrange(1, length):
-            for current_state in xrange(num_states):
+        for pos in range(1, length):
+            for current_state in range(num_states):
                 # Note the fact that multiplication in log domain turns a sum and sum turns a logsum
                 forward[pos, current_state] = logsum(forward[pos-1, :] + transition_scores[pos-1, current_state, :])
                 forward[pos, current_state] += emission_scores[pos, current_state]
@@ -59,8 +59,8 @@ class SequenceClassificationDecoder:
         backward[length-1, :] = final_scores
 
         # Backward loop.
-        for pos in xrange(length-2, -1, -1):
-            for current_state in xrange(num_states):
+        for pos in range(length-2, -1, -1):
+            for current_state in range(num_states):
                 backward[pos, current_state] = \
                     logsum(backward[pos+1, :] +
                            transition_scores[pos, :, current_state] +
@@ -101,8 +101,8 @@ class SequenceClassificationDecoder:
         viterbi_scores[0, :] = emission_scores[0, :] + initial_scores
 
         # Viterbi loop.
-        for pos in xrange(1, length):
-            for current_state in xrange(num_states):
+        for pos in range(1, length):
+            for current_state in range(num_states):
                 viterbi_scores[pos, current_state] = \
                     np.max(viterbi_scores[pos-1, :] + transition_scores[pos-1, current_state, :])
                 viterbi_scores[pos, current_state] += emission_scores[pos, current_state]
@@ -113,7 +113,7 @@ class SequenceClassificationDecoder:
         best_path[length-1] = np.argmax(viterbi_scores[length-1, :] + final_scores)
 
         # Backtrack.
-        for pos in xrange(length-2, -1, -1):
+        for pos in range(length-2, -1, -1):
             best_path[pos] = viterbi_paths[pos+1, best_path[pos+1]]
 
         return best_path, best_score
@@ -123,9 +123,9 @@ class SequenceClassificationDecoder:
 
     def run_forward_backward(self, initial_scores, transition_scores, final_scores, emission_scores):
         log_likelihood, forward = self.run_forward(initial_scores, transition_scores, final_scores, emission_scores)
-        print 'Log-Likelihood =', log_likelihood
+        print('Log-Likelihood =', log_likelihood)
 
         log_likelihood, backward = self.run_backward(initial_scores, transition_scores, final_scores, emission_scores)
-        print 'Log-Likelihood =', log_likelihood
+        print('Log-Likelihood =', log_likelihood)
 
         return forward, backward

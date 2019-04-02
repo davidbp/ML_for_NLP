@@ -1,6 +1,5 @@
 from skseq.sequences.label_dictionary import *
 
-
 # ----------
 # Replicates the same features as the HMM
 # One for word/tag and tag/tag pair
@@ -140,7 +139,7 @@ class IDFeatures:
         # Get label name from ID.
         y_name = self.dataset.y_dict.get_label_name(y)
         # Generate feature name.
-        feat_name = "init_tag:%s" % y_name
+        feat_name = "init_tag:" + y_name
         # Get feature ID from name.
         feat_id = self.add_feature(feat_name)
         # Append feature.
@@ -152,7 +151,7 @@ class IDFeatures:
         # Get label name from ID.
         y_name = self.dataset.y_dict.get_label_name(y_prev)
         # Generate feature name.
-        feat_name = "final_prev_tag:%s" % y_name
+        feat_name = "final_prev_tag:" + y_name
         # Get feature ID from name.
         feat_id = self.add_feature(feat_name)
         # Append feature.
@@ -167,13 +166,14 @@ class IDFeatures:
         y_name = self.dataset.y_dict.get_label_name(y)
 
         # Get word name from ID.
-        if isinstance(x, str) or isinstance(x, unicode):
+        if isinstance(x, str):
             x_name = x
         else:
             x_name = self.dataset.x_dict.get_label_name(x)
 
         # Generate feature name.
-        feat_name = "id:%s::%s" % (x_name, y_name)
+        #feat_name = "id:%s::%s" % (x_name, y_name)
+        feat_name = "id:{}::{}".format(x_name, y_name) 
         # Get feature ID from name.
         feat_id = self.add_feature(feat_name)
         # Append feature.
@@ -354,7 +354,6 @@ class UnicodeFeatures:
         y_name = y
         # Generate feature name.
         feat_name = "init_tag:%s" % y_name
-        feat_name = unicode(feat_name)
 
         # Get feature ID from name.
         feat_id = self.add_feature(feat_name)
@@ -368,7 +367,6 @@ class UnicodeFeatures:
         y_name = y_prev
         # Generate feature name.
         feat_name = "final_prev_tag:%s" % y_name
-        feat_name = unicode(feat_name)
 
         # Get feature ID from name.
         feat_id = self.add_feature(feat_name)
@@ -388,7 +386,6 @@ class UnicodeFeatures:
 
         # Generate feature name.
         feat_name = "id:%s::%s" % (x_name, y_name)
-        feat_name = unicode(feat_name)
 
         # Get feature ID from name.
         feat_id = self.add_feature(feat_name)
@@ -410,7 +407,6 @@ class UnicodeFeatures:
         y_prev_name = y_prev
         # Generate feature name.
         feat_name = "prev_tag:%s::%s" % (y_prev_name, y_name)
-        feat_name = unicode(feat_name)
 
         # Get feature ID from name.
         feat_id = self.add_feature(feat_name)
